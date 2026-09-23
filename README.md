@@ -5,132 +5,132 @@
 [![Engine](https://img.shields.io/badge/Engine-yt--dlp-red?style=for-the-badge&logo=youtube&logoColor=white)](https://github.com/yt-dlp/yt-dlp)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-Aplikasi web modern untuk mengunduh video dan audio YouTube secara instan dengan antarmuka Apple Liquid Dark Glass, performa tinggi, dan arsitektur backend ganda (PHP Gateway + Python Local Stream Daemon).
+A modern, high-performance web application designed for fast YouTube video and audio downloading, featuring an Apple Liquid Dark Glass interface and a hybrid backend architecture (PHP Gateway + Python Local Stream Daemon).
 
 ---
 
-## Fitur Utama
+## Key Features
 
-- **Apple Liquid Dark Glass UI**: Antarmuka responsif berbasis backdrop blur, aksen gradien halus, optimal di perangkat seluler maupun desktop, serta bebas iklan pop-up pihak ketiga.
+- **Apple Liquid Dark Glass UI**: Responsive user interface built with backdrop blur effects, subtle gradients, fluid micro-interactions, full mobile and desktop support, and zero third-party advertisements.
 - **Multi-Engine Pipeline**:
-  - Menggunakan engine native yt-dlp (zipapp murni, ringan tanpa overhead binary berat).
-  - Ekstraksi stream instan via client player Android untuk menghindari throttling atau bot detection datacenter.
-- **Pilihan Resolusi Video Lengkap**:
-  - MP4: 1080p Full HD, 720p HD, 480p, dan 360p.
-- **Ekstraksi Audio Berkualitas Tinggi**:
-  - MP3 dengan opsi bitrate: 320 kbps (Studio), 256 kbps, 192 kbps, dan 128 kbps.
-- **Direct Binary Streamer**: Pengunduhan langsung diteruskan ke browser pengguna secara chunking real-time (download.php) tanpa membebani penyimpanan server.
-- **Bypass Limitasi Shared Hosting**: Dilengkapi daemon lokal berbasis socket loopback untuk bekerja mulus pada lingkungan hosting dengan restriksi shell_exec (seperti cPanel / CloudLinux CageFS).
+  - Powered by native yt-dlp (pure Python standalone zipapp, lightweight without heavy binary compilation overhead).
+  - Instant stream extraction utilizing the Android player client to circumvent datacenter IP throttling and bot verification challenges.
+- **Comprehensive Video Resolutions**:
+  - MP4 format: 1080p Full HD, 720p HD, 480p, and 360p.
+- **High-Fidelity Audio Extraction**:
+  - MP3 format with configurable bitrates: 320 kbps (Studio Quality), 256 kbps, 192 kbps, and 128 kbps.
+- **Direct Binary Streamer**: Downloads are proxied in real time through chunked streaming (`download.php`) directly to the user's browser, preventing server disk storage exhaustion.
+- **Shared Hosting Compatibility**: Includes a localized HTTP loopback daemon operating on port 5155 to run seamlessly in constrained environments where `shell_exec` is restricted (such as cPanel / CloudLinux CageFS).
 
 ---
 
-## Arsitektur Sistem
+## System Architecture
 
 ```
-[ Pengguna / Browser ]
-        │  ▲
-        │  │  (Permintaan Info / Download Stream)
-        ▼  │
+[ Client / Web Browser ]
+         │   ▲
+         │   │   (Info Request / Stream Binary)
+         ▼   │
 ┌────────────────────────────────────────────────────────┐
 │  Web Server Frontend & API (PHP 8.x)                   │
-│  ├── index.php      : UI Apple Dark Glass             │
-│  ├── app.js         : State controller & clipboard    │
-│  ├── api.php        : Gateway & API dispatcher        │
-│  └── download.php   : High-throughput chunk streamer  │
+│  ├── index.php      : Apple Dark Glass UI              │
+│  ├── app.js         : State controller & clipboard     │
+│  ├── api.php        : Gateway & API dispatcher         │
+│  └── download.php   : High-throughput chunk streamer   │
 └────────────────────────────────────────────────────────┘
-        │  ▲
-        │  │  (HTTP Local Loopback / Port 5155)
-        ▼  │
+         │   ▲
+         │   │   (Local Loopback HTTP / Port 5155)
+         ▼   │
 ┌────────────────────────────────────────────────────────┐
-│  Local Stream Daemon (Python 3.11)                     │
+│  Local Stream Daemon (Python 3.11)                      │
 │  ├── daemon.py      : Non-blocking HTTP socket service │
-│  └── yt-dlp         : Pure Python zipapp extractor    │
+│  └── yt-dlp         : Pure Python zipapp extractor     │
 └────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Struktur Direktori
+## Directory Structure
 
 ```
 yt-downloader/
-├── .gitignore         # Filter file log, cache, dan environment lokal
-├── LICENSE            # Lisensi open-source resmi (MIT)
-├── README.md          # Dokumentasi teknis lengkap proyek
-├── api.php            # Endpoint API, validator URL, dan stream bridge
-├── app.js             # Logika frontend, event handler, dan status UI
-├── daemon.py          # Python HTTP daemon untuk ekstraksi stream yt-dlp
-├── download.php       # Stream proxy untuk direct download file
-├── index.php          # Halaman antarmuka utama (HTML5/CSS Dark Glass)
-└── yt-dlp             # Python zipapp standalone yt-dlp engine (~3MB)
+├── .gitignore         # Ignores logs, caches, and local system environments
+├── LICENSE            # Official open-source MIT License
+├── README.md          # Comprehensive technical documentation
+├── api.php            # API endpoints, URL validation, and stream dispatcher
+├── app.js             # Frontend controller, event listeners, and UI state
+├── daemon.py          # Python HTTP daemon for yt-dlp stream resolution
+├── download.php       # Binary stream proxy for direct file delivery
+├── index.php          # Main presentation layer (HTML5 / Dark Glass CSS)
+└── yt-dlp             # Standalone Python zipapp yt-dlp engine (~3MB)
 ```
 
 ---
 
-## Kebutuhan Sistem
+## System Requirements
 
-- Web Server: Apache / Nginx / LiteSpeed
-- PHP: Versi 8.0 atau lebih baru (ekstensi cURL dan json aktif)
-- Python: Versi 3.10 atau 3.11+
-- Port Tersedia: Port lokal 5155 (dapat disesuaikan di daemon.py dan api.php)
+- Web Server: Apache, Nginx, or LiteSpeed
+- PHP: Version 8.0 or higher (with `cURL` and `json` extensions enabled)
+- Python: Version 3.10 or 3.11+
+- Available Port: Local loopback port `5155` (configurable in `daemon.py` and `api.php`)
 
 ---
 
-## Panduan Instalasi dan Penggunaan
+## Installation and Setup
 
-### 1. Kloning Repositori
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/felixxferdinandd/yt-downloader.git
 cd yt-downloader
 ```
 
-### 2. Menjalankan di Lingkungan Lokal (Pengembangan / XAMPP)
-1. Letakkan folder proyek di dalam direktori web server (contoh: `C:\xampp\htdocs\yt-downloader` atau `/var/www/html/`).
-2. Jalankan Python daemon di terminal:
+### 2. Local Development Environment (XAMPP / Standalone PHP)
+1. Place the repository inside your web server root (e.g., `C:\xampp\htdocs\yt-downloader` or `/var/www/html/`).
+2. Start the Python stream daemon in your terminal:
    ```bash
    python daemon.py
    ```
-3. Buka browser dan akses:
+3. Open your browser and navigate to:
    ```
    http://localhost/yt-downloader/
    ```
 
-### 3. Menjalankan di Lingkungan Production (cPanel / Linux VPS)
-1. Unggah seluruh file ke direktori domain target (contoh: `public_html/`).
-2. Buka Terminal cPanel atau SSH ke VPS.
-3. Jalankan daemon di latar belakang (background process):
+### 3. Production Deployment (cPanel / Linux VPS)
+1. Upload all project files to your target public directory (e.g., `public_html/`).
+2. Open your cPanel Terminal or connect via SSH to the server.
+3. Launch the daemon as a detached background service:
    ```bash
    pkill -9 -f daemon.py
    nohup /usr/bin/python3 daemon.py > daemon.log 2>&1 &
    ```
-   *(Jika menggunakan Python versi spesifik seperti Alt-Python CloudLinux: gunakan path `/opt/alt/python311/bin/python3 daemon.py`)*.
-4. Periksa apakah daemon sudah berjalan normal:
+   *(For CloudLinux Alt-Python installations, use: `/opt/alt/python311/bin/python3 daemon.py`)*.
+4. Verify daemon health:
    ```bash
    curl -s http://127.0.0.1:5155/status
    ```
-   Output respons:
+   Expected response:
    ```json
    {"status":"online","port":5155,"has_ytdlp_module":true,"python_version":"3.11.x"}
    ```
 
 ---
 
-## Dokumentasi Endpoint API
+## API Documentation
 
-Semua respons dikembalikan dalam format standar JSON:
+All API responses are delivered in standard JSON format:
 
-| Method | Endpoint | Parameter | Deskripsi |
+| Method | Endpoint | Parameters | Description |
 | :--- | :--- | :--- | :--- |
-| GET | `/api.php?action=info` | `url` (wajib) | Mengambil metadata video, judul, thumbnail, durasi, dan format stream yang tersedia. |
-| GET | `/api.php?action=download` | `url`, `format`, `quality` | Mengambil direct stream URL hasil resolusi engine yt-dlp. |
-| GET | `/api.php?action=status` | - | Memeriksa status konektivitas antara PHP API dan Python Daemon. |
-| GET | `/api.php?action=log` | - | Membaca output log operasi daemon terbaru. |
+| GET | `/api.php?action=info` | `url` (required) | Fetches video metadata including title, thumbnail, duration, and available format tracks. |
+| GET | `/api.php?action=download` | `url`, `format`, `quality` | Resolves and returns the direct media stream URL from the yt-dlp engine. |
+| GET | `/api.php?action=status` | None | Checks connectivity between the PHP API gateway and the Python daemon. |
+| GET | `/api.php?action=log` | None | Retrieves recent operational output from the daemon log. |
 
 ---
 
-## Otomasi Heartbeat (Cron Job)
+## Daemon Heartbeat (Cron Job Automation)
 
-Untuk memastikan daemon selalu aktif tanpa perlu dijalankan ulang secara manual setelah server reboot, tambahkan konfigurasi berikut ke Cron Jobs cPanel (setiap 15 atau 30 menit):
+To guarantee the local daemon remains running indefinitely and restarts automatically after server reboots, add the following entry to your system crontab or cPanel Cron Jobs (recommended interval: every 15 or 30 minutes):
 
 ```bash
 pgrep -f "daemon.py" > /dev/null || (cd /home/username/public_html && nohup python3 daemon.py > daemon.log 2>&1 &)
@@ -145,9 +145,9 @@ pgrep -f "daemon.py" > /dev/null || (cd /home/username/public_html && nohup pyth
 
 ---
 
-## Lisensi
+## License
 
-Proyek ini dilisensikan di bawah [MIT License](LICENSE).  
-Bebas digunakan, dimodifikasi, dan didistribusikan untuk keperluan pembelajaran dan pengembangan non-komersial.
+This project is open-source and licensed under the [MIT License](LICENSE).  
+You are free to use, modify, and distribute this software for personal, educational, and non-commercial development.
 
-> **Disclaimer**: Proyek ini dibuat untuk tujuan edukasi dan penggunaan pribadi yang sah. Pengguna bertanggung jawab penuh atas hak cipta konten yang diunduh sesuai dengan ketentuan layanan platform terkait.
+> **Disclaimer**: This tool is developed strictly for educational and lawful personal backup purposes. Users are solely responsible for ensuring compliance with the terms of service and copyright policies of the media platforms accessed.
