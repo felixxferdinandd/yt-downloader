@@ -1,31 +1,30 @@
-# 🎬 YouTubeDown — High-Performance YouTube Media Downloader
+# YouTubeDown - High-Performance YouTube Media Downloader
 
 [![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![Engine](https://img.shields.io/badge/Engine-yt--dlp-red?style=for-the-badge&logo=youtube&logoColor=white)](https://github.com/yt-dlp/yt-dlp)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Design](https://img.shields.io/badge/Design-Apple%20Dark%20Glass-black?style=for-the-badge&logo=apple&logoColor=white)](#)
 
-Sebuah aplikasi web modern untuk mengunduh video dan audio YouTube secara instan dengan antarmuka **Apple Liquid Dark Glass**, performa tinggi, dan arsitektur backend ganda (PHP Gateway + Python Local Stream Daemon).
+Aplikasi web modern untuk mengunduh video dan audio YouTube secara instan dengan antarmuka Apple Liquid Dark Glass, performa tinggi, dan arsitektur backend ganda (PHP Gateway + Python Local Stream Daemon).
 
 ---
 
-## ✨ Fitur Utama
+## Fitur Utama
 
-- 💎 **Apple Liquid Dark Glass UI**: Antarmuka futuristik berbasis backdrop blur, aksen gradien halus, responsif penuh di mobile & desktop, serta bebas iklan pop-up yang mengganggu.
-- ⚡ **Multi-Engine Pipeline**:
-  - Menggunakan engine native **yt-dlp** (zipapp murni, ringan tanpa overhead binary berat).
+- **Apple Liquid Dark Glass UI**: Antarmuka responsif berbasis backdrop blur, aksen gradien halus, optimal di perangkat seluler maupun desktop, serta bebas iklan pop-up pihak ketiga.
+- **Multi-Engine Pipeline**:
+  - Menggunakan engine native yt-dlp (zipapp murni, ringan tanpa overhead binary berat).
   - Ekstraksi stream instan via client player Android untuk menghindari throttling atau bot detection datacenter.
-- 🎥 **Pilihan Resolusi Video Lengkap**:
-  - MP4: **1080p Full HD**, **720p HD**, **480p**, dan **360p**.
-- 🎵 **Ekstraksi Audio Berkualitas Tinggi**:
-  - MP3 dengan opsi bitrate: **320 kbps (Studio)**, **256 kbps**, **192 kbps**, dan **128 kbps**.
-- 🚀 **Direct Binary Streamer**: Pengunduhan langsung diteruskan ke browser pengguna secara chunking real-time (`download.php`) tanpa membebani penyimpanan server.
-- 🛡️ **Bypass Limitasi Shared Hosting**: Dilengkapi daemon lokal berbasis socket loopback untuk bekerja mulus pada lingkungan hosting dengan restriksi `shell_exec` (seperti cPanel / CloudLinux CageFS).
+- **Pilihan Resolusi Video Lengkap**:
+  - MP4: 1080p Full HD, 720p HD, 480p, dan 360p.
+- **Ekstraksi Audio Berkualitas Tinggi**:
+  - MP3 dengan opsi bitrate: 320 kbps (Studio), 256 kbps, 192 kbps, dan 128 kbps.
+- **Direct Binary Streamer**: Pengunduhan langsung diteruskan ke browser pengguna secara chunking real-time (download.php) tanpa membebani penyimpanan server.
+- **Bypass Limitasi Shared Hosting**: Dilengkapi daemon lokal berbasis socket loopback untuk bekerja mulus pada lingkungan hosting dengan restriksi shell_exec (seperti cPanel / CloudLinux CageFS).
 
 ---
 
-## 🏗️ Arsitektur Sistem
+## Arsitektur Sistem
 
 ```
 [ Pengguna / Browser ]
@@ -51,7 +50,7 @@ Sebuah aplikasi web modern untuk mengunduh video dan audio YouTube secara instan
 
 ---
 
-## 📁 Struktur Direktori
+## Struktur Direktori
 
 ```
 yt-downloader/
@@ -68,16 +67,16 @@ yt-downloader/
 
 ---
 
-## ⚙️ Kebutuhan Sistem
+## Kebutuhan Sistem
 
-- **Web Server**: Apache / Nginx / LiteSpeed
-- **PHP**: Versi `8.0` atau lebih baru (ekstensi `cURL` dan `json` aktif)
-- **Python**: Versi `3.10` atau `3.11+`
-- **Port Tersedia**: Port lokal `5155` (dapat disesuaikan di `daemon.py` dan `api.php`)
+- Web Server: Apache / Nginx / LiteSpeed
+- PHP: Versi 8.0 atau lebih baru (ekstensi cURL dan json aktif)
+- Python: Versi 3.10 atau 3.11+
+- Port Tersedia: Port lokal 5155 (dapat disesuaikan di daemon.py dan api.php)
 
 ---
 
-## 🚀 Panduan Instalasi & Menjalankan
+## Panduan Instalasi dan Penggunaan
 
 ### 1. Kloning Repositori
 ```bash
@@ -86,7 +85,7 @@ cd yt-downloader
 ```
 
 ### 2. Menjalankan di Lingkungan Lokal (Pengembangan / XAMPP)
-1. Letakkan folder proyek di dalam direktori web server (misal: `C:\xampp\htdocs\yt-downloader` atau `/var/www/html/`).
+1. Letakkan folder proyek di dalam direktori web server (contoh: `C:\xampp\htdocs\yt-downloader` atau `/var/www/html/`).
 2. Jalankan Python daemon di terminal:
    ```bash
    python daemon.py
@@ -97,9 +96,9 @@ cd yt-downloader
    ```
 
 ### 3. Menjalankan di Lingkungan Production (cPanel / Linux VPS)
-1. Unggah seluruh file ke direktori domain target (misal: `public_html/`).
-2. Buka **Terminal** cPanel atau SSH ke VPS Anda.
-3. Jalankan daemon di latar belakang (*background process*):
+1. Unggah seluruh file ke direktori domain target (contoh: `public_html/`).
+2. Buka Terminal cPanel atau SSH ke VPS.
+3. Jalankan daemon di latar belakang (background process):
    ```bash
    pkill -9 -f daemon.py
    nohup /usr/bin/python3 daemon.py > daemon.log 2>&1 &
@@ -109,29 +108,29 @@ cd yt-downloader
    ```bash
    curl -s http://127.0.0.1:5155/status
    ```
-   Output sukses:
+   Output respons:
    ```json
    {"status":"online","port":5155,"has_ytdlp_module":true,"python_version":"3.11.x"}
    ```
 
 ---
 
-## 📡 Dokumentasi Endpoint API
+## Dokumentasi Endpoint API
 
-Semua respons dikembalikan dalam format standar **JSON**:
+Semua respons dikembalikan dalam format standar JSON:
 
 | Method | Endpoint | Parameter | Deskripsi |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api.php?action=info` | `url` *(wajib)* | Mengambil metadata video, judul, thumbnail, durasi, dan format stream yang tersedia. |
-| `GET` | `/api.php?action=download` | `url`, `format`, `quality` | Mengambil direct stream URL hasil resolusi engine yt-dlp. |
-| `GET` | `/api.php?action=status` | - | Memeriksa status konektivitas antara PHP API dan Python Daemon. |
-| `GET` | `/api.php?action=log` | - | Membaca output log operasi daemon terbaru. |
+| GET | `/api.php?action=info` | `url` (wajib) | Mengambil metadata video, judul, thumbnail, durasi, dan format stream yang tersedia. |
+| GET | `/api.php?action=download` | `url`, `format`, `quality` | Mengambil direct stream URL hasil resolusi engine yt-dlp. |
+| GET | `/api.php?action=status` | - | Memeriksa status konektivitas antara PHP API dan Python Daemon. |
+| GET | `/api.php?action=log` | - | Membaca output log operasi daemon terbaru. |
 
 ---
 
-## 🛡️ Otomasi Heartbeat (Opsional untuk Server)
+## Otomasi Heartbeat (Cron Job)
 
-Untuk memastikan daemon selalu aktif tanpa perlu dijalankan ulang secara manual setelah server reboot, tambahkan baris berikut ke **Cron Jobs** cPanel (setiap 15 atau 30 menit):
+Untuk memastikan daemon selalu aktif tanpa perlu dijalankan ulang secara manual setelah server reboot, tambahkan konfigurasi berikut ke Cron Jobs cPanel (setiap 15 atau 30 menit):
 
 ```bash
 pgrep -f "daemon.py" > /dev/null || (cd /home/username/public_html && nohup python3 daemon.py > daemon.log 2>&1 &)
@@ -139,14 +138,14 @@ pgrep -f "daemon.py" > /dev/null || (cd /home/username/public_html && nohup pyth
 
 ---
 
-## 👤 Author & Kontributor
+## Author
 
-- **Felix Ferdinand** — Developer & Maintainer  
+- **Felix Ferdinand** - Developer & Maintainer  
   GitHub: [@felixxferdinandd](https://github.com/felixxferdinandd)
 
 ---
 
-## 📄 Lisensi
+## Lisensi
 
 Proyek ini dilisensikan di bawah [MIT License](LICENSE).  
 Bebas digunakan, dimodifikasi, dan didistribusikan untuk keperluan pembelajaran dan pengembangan non-komersial.
