@@ -1,0 +1,40 @@
+# Logs
+*.log
+daemon.log
+npm-debug.log*
+yarn-debug.log*
+
+# Environment and sensitive credentials
+.env
+.env.*
+*.local
+credentials.json
+config.local.php
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Temporary files and download caches
+*.tmp
+*.temp
+downloads/
+temp/
+cache/
